@@ -181,7 +181,7 @@ async fn tone_task(resources: ToneResources) {
         let dma_future = tx.dma_push(dma_ref.reborrow(), &front_buffer);
         generator.generate_samples(&mut back_buffer);
         dma_future.await;
-        mem::swap(&mut back_buffer, &mut front_buffer);
+        unsafe { core::ptr::swap(&mut front_buffer, &mut back_buffer) };
     }
 }
 

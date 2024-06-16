@@ -8,18 +8,18 @@ embassy-rp = { version = "0.1.0", features = [
     "defmt",
     "time-driver",
     "critical-section-impl",
-    "intrinsics",
-    "rom-v2-intrinsics",
+    # "intrinsics",
+    # "rom-v2-intrinsics",
 ] }
 embassy-executor = { version = "0.5.0", features = [
     "arch-cortex-m",
     "executor-thread",
     "executor-interrupt",
     "defmt",
-    "integrated-timers",
+    # "integrated-timers",
     "nightly",
 ] }
-embassy-time = { version = "0.3.0", features = ["defmt", "defmt-timestamp-uptime"] }
+embassy-time = { version = "0.3.0", features = ["defmt", "defmt-timestamp-uptime", "generic-queue"] }
 embassy-sync = { version = "0.5.0", features = ["defmt"] }
 embedded-hal-bus = { version = "0.1.0", features = ["async"] }
 cortex-m = { version = "0.7.6", features = ["inline-asm"] }
@@ -38,8 +38,14 @@ lsm6ds3tr = { git = "https://github.com/avsaase/lsm6ds3tr", rev = "24792cefd2778
 assign-resources = "0.4.1"
 
 [patch.crates-io]
-embassy-rp = { git = "https://github.com/embassy-rs/embassy", rev = "e3e3728daeab7115df58def6af7405100c82c011" }
-embassy-executor = { git = "https://github.com/embassy-rs/embassy", rev = "e3e3728daeab7115df58def6af7405100c82c011" }
-embassy-time = { git = "https://github.com/embassy-rs/embassy", rev = "e3e3728daeab7115df58def6af7405100c82c011" }
-embassy-sync = { git = "https://github.com/embassy-rs/embassy", rev = "e3e3728daeab7115df58def6af7405100c82c011" }
+embassy-rp = { git = "https://github.com/embassy-rs/embassy", rev = "1e268a4d3d14ac825b0b4160a81f06d5205e6dcd" }
+embassy-executor = { git = "https://github.com/embassy-rs/embassy", rev = "1e268a4d3d14ac825b0b4160a81f06d5205e6dcd" }
+embassy-time = { git = "https://github.com/embassy-rs/embassy", rev = "1e268a4d3d14ac825b0b4160a81f06d5205e6dcd" }
+embassy-sync = { git = "https://github.com/embassy-rs/embassy", rev = "1e268a4d3d14ac825b0b4160a81f06d5205e6dcd" }
 
+[profile.release]
+lto = true
+opt-level = "s"
+incremental = false
+codegen-units = 1
+debug = true
