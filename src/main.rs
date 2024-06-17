@@ -2,8 +2,6 @@
 #![no_main]
 #![feature(impl_trait_in_assoc_type)]
 
-use core::mem;
-
 use assign_resources::assign_resources;
 use defmt_rtt as _;
 use embassy_executor::{Executor, InterruptExecutor};
@@ -105,13 +103,13 @@ async fn low_priority_task(resources: ImuResources) {
                 .with_scale(AccelScale::_8G),
         );
     let mut imu = LSM6DS3TR::new(SpiInterface::new(spi_device)).with_settings(settings);
-    imu.init().await.unwrap();
+    imu.init().unwrap();
 
     let mut ticker = Ticker::every(Duration::from_hz(100));
     loop {
         ticker.next().await;
 
-        let _gyro_data = imu.read_gyro().await.unwrap(); // Commenting this out fixes the problem
+        let _gyro_data = imu.read_gyro().unwrap(); // Commenting this out fixes the problem
     }
 }
 
@@ -174,12 +172,12 @@ async fn tone_task(resources: ToneResources) {
     generator.set_volume(0.25);
     generator.set_frequency(400.0);
 
-    let mut front_buffer = [0; BUFFER_SIZE];
-    let mut back_buffer = [0; BUFFER_SIZE];
+    let mut front_buffer = &mut [0; BUFFER_SIZE];
+    let mut back_buffer = &mut [0; BUFFER_SIZE];
 
     loop {
-        let dma_future = tx.dma_push(dma_ref.reborrow(), &front_buffer);
-        generator.generate_samples(&mut back_buffer);
+        let dma_future = tx.dma_push(dma_ref.reborrow(), front_buffer);
+        generator.generate_samples(back_buffer);
         dma_future.await;
         unsafe { core::ptr::swap(&mut front_buffer, &mut back_buffer) };
     }

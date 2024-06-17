@@ -8,6 +8,8 @@ embassy-rp = { version = "0.1.0", features = [
     "defmt",
     "time-driver",
     "critical-section-impl",
+    "run-from-ram",
+    "boot2-ram-memcpy",
     # "intrinsics",
     # "rom-v2-intrinsics",
 ] }
@@ -32,7 +34,7 @@ panic-probe = { version = "0.3", features = ["print-defmt"] }
 static_cell = "2.1.0"
 portable-atomic = { version = "1.6.0", features = ["critical-section"] }
 fixed = "1.27.0"
-lsm6ds3tr = { git = "https://github.com/avsaase/lsm6ds3tr", rev = "24792cefd277814ef775aae88063f6699ceb8bdc", features = [
+lsm6ds3tr = { git = "https://github.com/avsaase/lsm6ds3tr", rev = "e1616bcfb5b7d892a892819480d49b19614d0e2c", features = [
     "defmt",
 ] }
 assign-resources = "0.4.1"
